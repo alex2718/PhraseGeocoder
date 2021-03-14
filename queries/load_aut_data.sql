@@ -1,0 +1,79 @@
+COPY ADDRESS_ALIAS_TYPE_AUT
+FROM :address_alias_type_aut_path
+DELIMITER '|'
+CSV HEADER;
+
+COPY ADDRESS_CHANGE_TYPE_AUT
+FROM :address_change_type_aut_path
+DELIMITER '|'
+CSV HEADER;
+
+COPY ADDRESS_TYPE_AUT
+FROM :address_type_aut_path
+DELIMITER '|'
+CSV HEADER;
+
+COPY FLAT_TYPE_AUT
+FROM :flat_type_aut_path
+DELIMITER '|'
+CSV HEADER;
+
+COPY GEOCODED_LEVEL_TYPE_AUT
+FROM :geocoded_level_type_aut_path
+DELIMITER '|'
+CSV HEADER;
+
+COPY GEOCODE_RELIABILITY_AUT
+FROM :geocode_reliability_aut_path
+DELIMITER '|'
+CSV HEADER;
+
+COPY GEOCODE_TYPE_AUT
+FROM :geocode_type_aut_path
+DELIMITER '|'
+CSV HEADER;
+
+COPY LEVEL_TYPE_AUT
+FROM :level_type_aut_path
+DELIMITER '|'
+CSV HEADER;
+
+COPY LOCALITY_ALIAS_TYPE_AUT
+FROM :locality_alias_type_aut_path
+DELIMITER '|'
+CSV HEADER;
+
+COPY LOCALITY_CLASS_AUT
+FROM :locality_class_aut_path
+DELIMITER '|'
+CSV HEADER;
+
+COPY MB_MATCH_CODE_AUT
+FROM :mb_match_code_aut_path
+DELIMITER '|'
+CSV HEADER;
+
+COPY PS_JOIN_TYPE_AUT
+FROM :ps_join_type_aut_path
+DELIMITER '|'
+CSV HEADER;
+
+COPY STREET_CLASS_AUT
+FROM :street_class_aut_path
+DELIMITER '|'
+CSV HEADER;
+
+COPY STREET_LOCALITY_ALIAS_TYPE_AUT
+FROM :street_locality_alias_type_aut_path
+DELIMITER '|'
+CSV HEADER;
+
+COPY STREET_SUFFIX_AUT
+FROM :street_suffix_aut_path
+DELIMITER '|'
+CSV HEADER;
+
+COPY STREET_TYPE_AUT
+FROM :street_type_aut_path
+DELIMITER '|'
+CSV HEADER;
