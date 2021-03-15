@@ -47,8 +47,8 @@ table_names_aut = {'address_alias_type_aut_path': 'ADDRESS_ALIAS_TYPE_AUT_psv.ps
 
 class GNAFLoader:
     def __init__(self, db_name):
-        db = results.db(DB)
-        self.db = db.create_database()
+        self.db = results.db(db_name)
+        self.db.create_database()
 
     def load_data(self, gnaf_path, gnaf_aut_path, state_names=['VIC']):
         self.gnaf_aut_path = gnaf_aut_path
@@ -56,7 +56,7 @@ class GNAFLoader:
         self.states = state_names
 
         print('Creating tables...')
-        db.ss(CREATE_TABLES)
+        self.db.ss(CREATE_TABLES)
 
         # the paths of the aut files
         for table_name in table_names_aut:
@@ -79,12 +79,11 @@ class GNAFLoader:
 
     def create_addresses(self):
         print('Creating the address view...')
-        self.db()
         self.db.ss(ADDRESS_VIEW)
         self.db.ss(MAKE_ADDRESSES)
 
         print('Standardizing spacing...')
         # tidy up to remove additional spaces
-        db.ss(r"""UPDATE addrtext
+        self.db.ss(r"""UPDATE addrtext
         SET addr = trim(regexp_replace(addr, '\s+', ' ', 'g')
         );""")
