@@ -16,6 +16,28 @@ poetry install
 ```
 
 ## Usage
+To set up the GNAF first download it from the link above. Then use the following code, replacing the paths in gnaf_path and gnaf_aut_path with the paths of the folders where the data has been extracted to
+
+```
+# set up the GNAF database
+from phrasegeo import GNAFLoader
+
+# specify the name of the database
+gnaf = GNAFLoader("postgresql:///GNAF_VIC")
+
+# path to the auth and the state psv files
+gnaf_path = '/GNAF/nov20_gnaf_pipeseparatedvalue/G-NAF/G-NAF NOVEMBER 2020/Standard'
+gnaf_aut_path = '/GNAF/nov20_gnaf_pipeseparatedvalue/G-NAF/G-NAF NOVEMBER 2020/Authority Code'
+
+# load up the psv files
+gnaf.load_data(gnaf_path, gnaf_aut_path, state_names=['VIC'])
+
+# add the FK contraints
+gnaf.add_constraints()
+
+# create the 'nice' addresses
+gnaf.create_addresses()
+```
 The following example shows how to set up the GNAF and geocode some example addresses
 
 ```
