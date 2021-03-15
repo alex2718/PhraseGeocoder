@@ -1,7 +1,7 @@
 import results 
 from pathlib import Path
 
-DO_MATCH = Path("queries/do_match_testing3.sql").read_text()
+DO_MATCH = Path("queries/do_match.sql").read_text()
 CREATE_GEOCODER_TABLES = Path("queries/create_geocoder_tables.sql").read_text()
 MAKE_ADDRESSES = Path("queries/make_addresses.sql").read_text()
 CREATE_PHRASES = Path("queries/create_phrases.sql").read_text()
@@ -22,6 +22,9 @@ class Matcher(object):
         Create the inverted index and phrase tables 
         """
         # create phrases
+        print("Creating geocoder tables...")
+        self.db.ss(CREATE_GEOCODER_TABLES)
+        
         print('Creating phrases...')
         self.db.ss(CREATE_PHRASES)
         
