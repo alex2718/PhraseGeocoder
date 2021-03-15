@@ -1,9 +1,4 @@
--- the table containing the 'nicely formatted' addresses
-create table addrtext (
-    addr_id varchar(20) not null,
-    addr text not null,
-	addr_tokens int[] not null
-);
+CREATE EXTENSION pg_trgm;
 
 CREATE TABLE phrase -- Compute 2-word phrase tokens
 (addr_id varchar not null,

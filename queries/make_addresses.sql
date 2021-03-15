@@ -1,3 +1,10 @@
+-- the table containing the 'nicely formatted' addresses
+create table addrtext (
+    addr_id varchar(20) not null,
+    addr text not null,
+	addr_tokens int[] not null
+);
+
 -- tidy up to remove additional spaces
 insert into addrtext
 select
