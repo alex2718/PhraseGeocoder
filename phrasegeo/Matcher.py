@@ -1,8 +1,8 @@
 import results 
 from pathlib import Path
 
-DO_MATCH = Path("queries/do_match4.sql").read_text()
-DO_MATCH = Path("queries/do_trigram_match2.sql").read_text() # trigram phrases
+DO_MATCH_BASIC = Path("queries/do_match4.sql").read_text()
+DO_MATCH_TRIGRAM = Path("queries/do_trigram_match2.sql").read_text() # trigram phrases
 CREATE_GEOCODER_TABLES = Path("queries/create_geocoder_tables.sql").read_text()
 MAKE_ADDRESSES = Path("queries/make_addresses.sql").read_text()
 CREATE_PHRASES = Path("queries/create_phrases.sql").read_text()
@@ -36,7 +36,7 @@ class Matcher(object):
         # create indexes
         self.db.ss(CREATE_INDEXES)
 
-    def match(self, address_list):
+    def match(self, address_list, how='standard'):
         with self.db.transaction() as t:
             t.ex(
                 "create temporary table input_addresses(address_id bigint not null, address text not null);"
@@ -47,7 +47,10 @@ class Matcher(object):
                 for i, a in enumerate(address_list)
             ]
             t.insert("input_addresses", input_list)
-            answers = t.ex(DO_MATCH)
+            if how == 'standard':
+                answers = t.ex(DO_MATCH_BASIC)
+            elif how == 'trigram':
+                answers = t.ex(DO_MATCH_TRIGRAM)
             t.ex("drop table input_addresses;")
         return answers
 
