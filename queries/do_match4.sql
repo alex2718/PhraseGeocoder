@@ -1,4 +1,4 @@
-WITH input_addresses_with_numerics AS (
+WITH input_addresses_with_numerics AS not materialized (
     SELECT 
     t1.address_id,
     t1.address,
@@ -9,14 +9,15 @@ WITH input_addresses_with_numerics AS (
         SELECT address_id, array_agg(i) as numeric_tokens
         FROM (
             SELECT t1.address_id, (regexp_matches(
-                regexp_replace(t1.address, '3\d{3}$', ''), '\d+', 'g'))[1] i 
+                -- exclude postcodes
+                regexp_replace(t1.address, '3\d{3}$', ''), '\d+', 'g'))[1] i
             FROM input_addresses t1
         ) temp
         GROUP BY address_id
     ) t2
     ON t1.address_id=t2.address_id
 ),
-input_phrases AS (
+input_phrases AS NOT materialized (
     SELECT
     m.address_id,
     (regexp_matches(regexp_replace(m.address,'[^A-Z0-9]+',' ','g'),
@@ -29,19 +30,19 @@ input_phrases AS (
     '[A-Z0-9]+','') ,'[A-Z0-9+]+ [A-Z0-9+]+','g'))[1] as phrase
     FROM input_addresses as m
 ),
-input_phrase_matched AS (
+input_phrase_matched AS NOT materialized (
     SELECT l.phrase, l.address_id AS address_id1, r.addr_ids AS address_ids2
-    FROM input_phrases as l 
-    LEFT JOIN phraseinverted as r 
-    ON l.phrase=r.tokenphrase and r.frequency < 400
+    FROM input_phrases AS l 
+    LEFT JOIN phraseinverted AS r 
+    ON l.phrase=r.tokenphrase AND r.frequency < 400
 ),
-input_proposed_match AS (
+input_proposed_match AS NOT materialized (
     SELECT distinct address_id1, t2.address_id2
     FROM input_phrase_matched as t1
     left join lateral unnest(address_ids2) as t2(address_id2) 
     on true
 ),
-match as (
+match AS NOT materialized (
     select t1.address_id1 as address_id1, t1.address_id2 as address_id2, 
     t2.address as address, t2.numeric_tokens, t3.addr, 
     case when t3.addr is not null then
@@ -51,7 +52,7 @@ match as (
     left join input_addresses_with_numerics t2 on t1.address_id1=t2.address_id
     left join addrtext t3 on t1.address_id2=t3.addr_id
 ),
-final_match AS (
+final_match AS NOT materialized (
     SELECT t1.address_id1, t1.address, t1.address_id2, 
     t3.addr as matched_address, t2.*, t1.similarity
     FROM match t1
@@ -60,10 +61,10 @@ final_match AS (
     LEFT JOIN addrtext t3 
     ON t1.address_id2=t3.addr_id
     WHERE 
-    t1.numeric_tokens <@ t3.addr_tokens or address_id2 is null
+    t1.numeric_tokens <@ t3.addr_tokens or address_id2 is null -- numeric tokens constraint
     ORDER BY t1.address_id1 ASC, t1.similarity DESC
 ),
-best_match AS (
+best_match AS NOT materialized ( -- possible inefficiencies here. tidy up to make it faster
     SELECT DISTINCT on (t1.address_id1) address_id1, t1.address as input_address, 
     t1.matched_address, t1.similarity as similarity,
     street_locality_pid, locality_pid, building_name, 
