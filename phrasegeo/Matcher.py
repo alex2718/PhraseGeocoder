@@ -2,6 +2,7 @@ import results
 from pathlib import Path
 
 DO_MATCH = Path("queries/do_match4.sql").read_text()
+DO_MATCH = Path("queries/do_trigram_match2.sql").read_text() # trigram phrases
 CREATE_GEOCODER_TABLES = Path("queries/create_geocoder_tables.sql").read_text()
 MAKE_ADDRESSES = Path("queries/make_addresses.sql").read_text()
 CREATE_PHRASES = Path("queries/create_phrases.sql").read_text()
