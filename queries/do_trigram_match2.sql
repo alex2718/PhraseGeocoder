@@ -56,11 +56,11 @@ input_trigramphrases AS NOT MATERIALIZED (
     AND t1.trigram similar TO '[A-Z0-9]{2,3}' AND t2.trigram similar TO '[A-Z0-9]{2,3}'
 ),
 input_phrase_matched AS NOT MATERIALIZED (
-    SELECT l.trigramphrase, l.address_id AS address_id1, r.address_ids AS address_ids2
+    SELECT l.trigramphrase, l.address_id AS address_id1, r.addr_ids AS address_ids2
     FROM input_trigramphrases l
     LEFT JOIN trigramphraseinverted r
     ON l.trigramphrase = r.trigramphrase
-    AND r.frequency < 4000
+    AND r.frequency < 1000 -- lowering the threshold improves speed at the expense of recall
 ),
 input_proposed_match AS NOT MATERIALIZED (
     SELECT DISTINCT address_id1, t2.address_id2
