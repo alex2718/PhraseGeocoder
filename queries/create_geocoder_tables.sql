@@ -11,10 +11,10 @@ frequency bigint not null);
 
 CREATE TABLE trigramphrase -- Compute 2-word trigram phrases
 (addr_id varchar not null,
-trigramphrase text not null,
+trigramphrase text not null
 );
 
-CREATE TABLE phraseinverted -- Compute trigram inverted index
+CREATE TABLE trigramphraseinverted -- Compute trigram inverted index
 (trigramphrase text not null,
 addr_ids varchar[] not null,
 frequency bigint not null);
