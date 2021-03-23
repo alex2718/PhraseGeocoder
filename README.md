@@ -15,7 +15,7 @@ pip install poetry
 poetry install
 ```
 
-## Usage
+## Setup of GNAF
 To set up the GNAF first download it from the link above. Then use the following code, replacing the paths in gnaf_path and gnaf_aut_path with the paths of the folders where the data has been extracted to
 
 ```
@@ -38,6 +38,8 @@ gnaf.add_constraints()
 # create the 'nice' addresses
 gnaf.create_addresses()
 ```
+
+## Setup matcher and run on example data
 The following example shows how to set up the GNAF and geocode some example addresses
 
 ```
@@ -63,6 +65,37 @@ matcher.setup()
 
 # do the matching
 matches = matcher.match(addresslist)
+
+# convert to a pandas dataframe
+df_matches = pd.DataFrame(matches)
+```
+
+## Using a pipeline for multi-stage matching
+We can setup multiple matcher objects and pass the list of addresses through each one consecutively with
+those that are unmatched by one sent as input addresses to the next matcher in the pipeline. This is 
+useful for increasing the recall of lower quality addresses without sacrificing too much speed.
+
+Assuming the database has been setup as above:
+
+```
+import pandas as pd 
+from phrasegeo import Matcher, MatcherPipeline
+
+
+# set up the matchers
+matcher1 = Matcher(db, how='standard')
+matcher2 = Matcher(db, how='slow')
+matcher3 = Matcher(db, how='trigram')
+
+# set up the pipeline
+pipeline = MatcherPipeline([matcher1, matcher2, matcher3])
+
+# load up the test addresses
+df = pd.read_csv('phrasegeo/datasets/addresses1.csv')
+addresslist = list(df['ADDRESS'].values)
+
+# do the matching
+matches = pipeline.match(addresslist)
 
 # convert to a pandas dataframe
 df_matches = pd.DataFrame(matches)
