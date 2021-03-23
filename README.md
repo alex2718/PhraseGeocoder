@@ -81,7 +81,6 @@ Assuming the database has been setup as above:
 import pandas as pd 
 from phrasegeo import Matcher, MatcherPipeline
 
-
 # set up the matchers
 matcher1 = Matcher(db, how='standard')
 matcher2 = Matcher(db, how='slow')
