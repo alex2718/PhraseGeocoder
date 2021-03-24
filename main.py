@@ -8,12 +8,19 @@ db_name = 'GNAF_VIC'
 DB = f"postgresql:///{db_name}"
 db = results.db(DB)
 
-# set up the API and matcher
+# set up the API
 app = FastAPI()
+
+# set up matchers and pipeline
 matcher1 = Matcher(db, how='standard')
+matcher2 = Matcher(db, how='slow')
+matcher3 = Matcher(db, how='trigram')
+
+matcher_mapping = {'standard': matcher1, 'slow': matcher2, 'trigram': matcher3}
 
 class AddressBatch(BaseModel):
     addresses: list
+    how: list
 
 @app.get("/")
 async def root():
@@ -23,6 +30,10 @@ async def root():
 
 @app.post("/match/")
 async def check_list(addresses: AddressBatch):
-    addresses = addresses.dict()['addresses']
-    answers = matcher1.match(addresses)
+    addressesdict = addresses.dict()
+    addresses = addressesdict['addresses']
+    how = addressesdict['how']
+    matchers = [matcher_mapping[key] for key in how]
+    pipeline = MatcherPipeline(matchers)
+    answers = pipeline.match(addresses)
     return answers
