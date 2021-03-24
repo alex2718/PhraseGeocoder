@@ -8,6 +8,9 @@ authors = ["alex.lee <alex.lee@dpc.vic.gov.au>"]
 python = "^3.8"
 results = "^0.1.1588569394"
 pandas = "^1.2.2"
+flake8 = "^3.9.0"
+fastapi = "^0.63.0"
+uvicorn = "^0.13.4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
