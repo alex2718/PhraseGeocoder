@@ -11,6 +11,7 @@ pandas = "^1.2.2"
 flake8 = "^3.9.0"
 fastapi = "^0.63.0"
 uvicorn = "^0.13.4"
+black = "^20.8b1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
