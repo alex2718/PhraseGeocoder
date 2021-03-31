@@ -1,5 +1,6 @@
-from time import time 
+from time import time
 from .utils import get_unmatched, order_matches
+
 
 class MatcherPipeline(object):
     def __init__(self, matchers):
@@ -25,11 +26,11 @@ class MatcherPipeline(object):
         # this needs to be optimised
         matcher = self.matchers[0]
         results = matcher.match(addresses)
-        threshold = matcher.threshold 
+        threshold = matcher.threshold
 
         matched, unmatched = get_unmatched(results, threshold)
-        addresses0 = [result['input_address'] for result in unmatched]
-        address_ids0 = [result['address_id1'] for result in unmatched]
+        addresses0 = [result["input_address"] for result in unmatched]
+        address_ids0 = [result["address_id1"] for result in unmatched]
 
         all_results += matched
 
@@ -38,11 +39,11 @@ class MatcherPipeline(object):
             threshold = matcher.threshold
             matched, unmatched = get_unmatched(results, threshold)
 
-            addresses0 = [result['input_address'] for result in unmatched]
-            address_ids0 = [result['address_id1'] for result in unmatched]
+            addresses0 = [result["input_address"] for result in unmatched]
+            address_ids0 = [result["address_id1"] for result in unmatched]
 
             all_results += matched
-        
+
         answers = all_results + unmatched
         answers = order_matches(answers)
 
