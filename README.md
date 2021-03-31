@@ -2,9 +2,8 @@
 
 A geocoder written in Python and Postgres, based on the paper: https://arxiv.org/abs/1708.01402
 
-Author: Alex Lee
-
-Contributors: Rob Lechte (https://github.com/djrobstep)
+- Author: Alex Lee
+- Contributors: Rob Lechte (https://github.com/djrobstep)
 ## Requirements
 - Poetry
 - Python 3.6+
