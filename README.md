@@ -7,7 +7,7 @@ A geocoder written in Python and Postgres, based on the paper: https://arxiv.org
 ## Requirements
 - Poetry
 - Python 3.6+
-- Postgres 12
+- Postgres 12+
 - Geocoded National Address File (https://data.gov.au/dataset/ds-dga-19432f89-dc3a-4ef3-b943-5326ef1dbecc/details)
 
 ## Installation
