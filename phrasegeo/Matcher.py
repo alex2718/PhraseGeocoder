@@ -2,7 +2,7 @@ import results
 from pathlib import Path
 
 DO_MATCH_BASIC = Path("queries/do_match4.sql").read_text() # threshold 400 - for fast matching
-DO_MATCH_SLOW = Path("queries/do_match_slower.sql").read_text() # threshold 10000 - for slower but more accurate
+#DO_MATCH_SLOW = Path("queries/do_match_slower.sql").read_text() # threshold 10000 - for slower but more accurate
 DO_MATCH_TRIGRAM = Path("queries/do_trigram_match2.sql").read_text() # trigram phrases - slowest but most accurate
 
 CREATE_GEOCODER_TABLES = Path("queries/create_geocoder_tables.sql").read_text()
