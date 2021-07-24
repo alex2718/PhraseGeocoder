@@ -18,7 +18,9 @@ poetry install
 ```
 
 ## Setup of GNAF
-To set up the GNAF first download it from the link above. Then use the following code, replacing the paths in gnaf_path and gnaf_aut_path with the paths of the folders where the data has been extracted to
+To set up the GNAF first download the data from the link above. 
+
+Once the poetry shell has been opened, enter a Python shell and use the following code, replacing the paths in gnaf_path and gnaf_aut_path with the paths of the folders where the data has been extracted to
 
 ```
 # set up the GNAF database
