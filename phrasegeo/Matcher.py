@@ -26,29 +26,38 @@ class Matcher(object):
         self.threshold = threshold # the threshold when chaining matchers together
         self.how = how # which SQL query to use
 
-    def setup(self):
+    def setup(self, phrases=['standard']):
         """
         Create the inverted index and phrase tables 
+
+        phrases: list of strs with the types of phrases used in the matching
+            "standard" - use pairs of consecutive tokens
+            "trigrams" - use pairs of trigrams from consecutive tokens
         """
         # create phrases
         print("Creating geocoder tables...")
         self.db.ss(CREATE_GEOCODER_TABLES)
         
-        print('Creating phrases...')
-        self.db.ss(CREATE_PHRASES)
+        if 'standard' in phrases:
+            print('Creating phrases...')
+            self.db.ss(CREATE_PHRASES)
 
-        print('Creating trigram phrases...')
-        self.db.ss(CREATE_TRIGRAMPHRASES)
+        if 'trigram' in phrases:
+            print('Creating trigram phrases...')
+            self.db.ss(CREATE_TRIGRAMPHRASES)
         
         print('Creating inverted index...')
         # create inverted index
-        self.db.ss(INVERTED_INDEX)
-        # create inverted index for trigram phrases
-        self.db.ss(TRIGRAMINVERTED_INDEX)
 
-        # create indexes
-        self.db.ss(CREATE_INDEXES)
-        self.db.ss(CREATE_TRIGRAMINDEXES)
+        if 'standard' in phrases:
+            self.db.ss(INVERTED_INDEX)
+            self.db.ss(CREATE_INDEXES)
+            
+        # create inverted index for trigram phrases
+        if 'trigram' in phrases:
+            self.db.ss(TRIGRAMINVERTED_INDEX)
+            self.db.ss(CREATE_TRIGRAMINDEXES)
+        
 
     def match(self, addresses, address_ids=None):
         how = self.how
